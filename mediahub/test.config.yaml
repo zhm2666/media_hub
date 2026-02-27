@@ -16,8 +16,19 @@ log:
   # panic,fatal,error,warn,warning,info,debug,trace
   level: "info"
   logPath: "runtime/logs/app.log"
+<<<<<<< HEAD
 cos:
+<<<<<<< HEAD
 
+=======
+  secretId: AK
+  secretKey: HA
+  cdnDomain: "https://mediahubdev.0voice.com"
+  bucketUrl: "https://mediahubdev-1256487221.cos.ap-guangzhou.myqcloud.com"
+>>>>>>> cda9536 (删除密钥信息)
+=======
+
+>>>>>>> 1c6cfb6 (删除密钥)
 dependOn:
   shortUrl:
     address: "2410-shorturl:50051"
