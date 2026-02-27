@@ -1,0 +1,2 @@
+time="2024-10-21T21:51:42+08:00" level=error msg="request Content-Type isn't multipart/form-data" file="E:/Work/Code/go/2410/Mediahub/mediahub/controller/file.go:30" func="mediahub/controller.(*Controller).Upload"
+time="2024-10-28T20:21:45+08:00" level=fatal msg="listen tcp 0.0.0.0:8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted." file="E:/Work/Code/go/2410/Mediahub/mediahub/main.go:56" func=main.main
