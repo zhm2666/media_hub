@@ -3,7 +3,7 @@ package mysql
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	config "mediahub/pkg/config"
+	"mediahub/pkg/config"
 	"time"
 )
 

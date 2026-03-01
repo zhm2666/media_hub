@@ -4,8 +4,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"mediahub/pkg/config"
-	grpc_client_pool "mediahub/pkg/grpc-client-pool"
+	"mediahub/pkg/grpc_client_pool"
 	"mediahub/pkg/log"
+	"mediahub/pkg/zerror"
 	"sync"
 )
 
@@ -21,7 +22,7 @@ func NewShortUrlClientPool() grpc_client_pool.ClientPool {
 		cnf := config.GetConfig()
 		pool, err = grpc_client_pool.NewPool(cnf.DependOn.ShortUrl.Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			log.Error(err)
+			log.Error(zerror.NewByErr(err))
 		}
 	})
 	return pool

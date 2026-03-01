@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"io"
 	"mediahub/pkg/config"
-	"mediahub/pkg/log"
-	"mediahub/pkg/zerror"
 	"net/http"
 	"strings"
 )
@@ -16,7 +16,6 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := strings.TrimPrefix(c.Request.Header.Get("Authorization"), "Bearer ")
 		if token == "" {
-			c.Next()
 			return
 		}
 		user, err := checkAuth(token)
@@ -42,33 +41,33 @@ type userInfo struct {
 	AvatarUrl string `json:"avatar_url"`
 }
 
-var httpClient = &http.Client{}
-
 func checkAuth(token string) (*userInfo, error) {
 	conf := config.GetConfig()
 	path := "/api/v1/login/check/auth"
 	url := fmt.Sprintf("%s%s?access_token=%s", conf.DependOn.User.Address, path, token)
+	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
-	res, err := httpClient.Do(req)
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
+
 	if res.StatusCode == 401 {
 		return nil, nil
 	}
 	if res.StatusCode == 500 {
-		err = zerror.NewByMsg("服务器内部错误")
+		err = errors.New("服务器内部错误")
 		return nil, err
 	}
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
-
 	user := &userInfo{}
 	err = json.Unmarshal(body, user)
 	if err != nil {

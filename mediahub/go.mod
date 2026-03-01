@@ -5,10 +5,10 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/redis/go-redis/v9 v9.7.0
+	github.com/redis/go-redis/v9 v9.5.4
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.19.0
-	github.com/tencentyun/cos-go-sdk-v5 v0.7.55
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.54
 	google.golang.org/grpc v1.62.1
 	google.golang.org/protobuf v1.34.1
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1

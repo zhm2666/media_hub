@@ -6,10 +6,10 @@ import (
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"io"
 	"mediahub/pkg/storage"
-	"mime"
 	"net/http"
 	url2 "net/url"
 	"path"
+	"strings"
 )
 
 type cosStorageFactory struct {
@@ -19,22 +19,16 @@ type cosStorageFactory struct {
 	cdnDomain string
 }
 
-func (f *cosStorageFactory) CreateStorage() storage.Storage {
-	return &cosStorage{
-		bucketUrl: f.bucketUrl,
-		secretKey: f.secretKey,
-		secretId:  f.secretId,
-		cdnDomain: f.cdnDomain,
-	}
-}
-
 func NewCosStorageFactory(bucketUrl, secretId, secretKey, cdnDomain string) storage.StorageFactory {
 	return &cosStorageFactory{
 		bucketUrl: bucketUrl,
-		secretKey: secretKey,
 		secretId:  secretId,
+		secretKey: secretKey,
 		cdnDomain: cdnDomain,
 	}
+}
+func (f *cosStorageFactory) CreateStorage() storage.Storage {
+	return newCos(f.bucketUrl, f.secretId, f.secretKey, f.cdnDomain)
 }
 
 type cosStorage struct {
@@ -42,6 +36,15 @@ type cosStorage struct {
 	secretId  string
 	secretKey string
 	cdnDomain string
+}
+
+func newCos(bucketUrl, secretId, secretKey, cdnDomain string) storage.Storage {
+	return &cosStorage{
+		bucketUrl: bucketUrl,
+		secretId:  secretId,
+		secretKey: secretKey,
+		cdnDomain: cdnDomain,
+	}
 }
 
 func (s *cosStorage) Upload(r io.Reader, md5Digest []byte, dstPath string) (url string, err error) {
@@ -56,14 +59,13 @@ func (s *cosStorage) Upload(r io.Reader, md5Digest []byte, dstPath string) (url 
 
 	opt := &cos.ObjectPutOptions{
 		ObjectPutHeaderOptions: &cos.ObjectPutHeaderOptions{
-			ContentType: mime.TypeByExtension(path.Ext(dstPath)),
+			ContentType: s.getContentType(dstPath),
 		},
 		ACLHeaderOptions: &cos.ACLHeaderOptions{},
 	}
 	if len(md5Digest) != 0 {
 		opt.ObjectPutHeaderOptions.ContentMD5 = base64.StdEncoding.EncodeToString(md5Digest)
 	}
-
 	_, err = client.Object.Put(context.Background(), dstPath, r, opt)
 	if err != nil {
 		return "", err
@@ -72,5 +74,13 @@ func (s *cosStorage) Upload(r io.Reader, md5Digest []byte, dstPath string) (url 
 	if s.cdnDomain != "" {
 		url = s.cdnDomain + dstPath
 	}
-	return
+	return url, err
+}
+
+func (s *cosStorage) getContentType(dstPath string) string {
+	ext := strings.Trim(path.Ext(dstPath), ".")
+	if ext == "jpg" {
+		ext = "jpeg"
+	}
+	return "image/" + ext
 }

@@ -7,6 +7,7 @@ import (
 
 func InitRouters(api *gin.RouterGroup, c *controller.Controller) {
 	v1 := api.Group("/v1")
-	v1.POST("/file/upload", c.Upload)
+	fileGroup := v1.Group("/file")
+	fileGroup.POST("/upload", c.Upload)
 	v1.GET("/home", c.Home)
 }

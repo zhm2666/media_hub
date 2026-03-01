@@ -29,8 +29,8 @@ type Config struct {
 	Cos struct {
 		SecretId  string
 		SecretKey string
-		CDNDomain string
 		BucketUrl string
+		CDNDomain string
 	}
 	DependOn struct {
 		ShortUrl struct {

@@ -13,9 +13,7 @@ import (
 	"net/http"
 )
 
-var (
-	configFile = flag.String("config", "dev.config.yaml", "")
-)
+var configFile = flag.String("config", "dev.config.yaml", "")
 
 func main() {
 	flag.Parse()
@@ -28,20 +26,19 @@ func main() {
 	log.SetPrintCaller(true)
 
 	logger := log.NewLogger()
-	logger.SetLevel(cnf.Log.Level)
 	logger.SetOutput(log.GetRotateWriter(cnf.Log.LogPath))
+	logger.SetLevel(cnf.Log.Level)
 	logger.SetPrintCaller(true)
 
 	sf := cos.NewCosStorageFactory(cnf.Cos.BucketUrl, cnf.Cos.SecretId, cnf.Cos.SecretKey, cnf.Cos.CDNDomain)
-	c := controller.NewController(sf, logger, cnf)
+	controller := controller.NewController(sf, logger, cnf)
 
-	//启动应用程序
 	gin.SetMode(cnf.Http.Mode)
 	r := gin.Default()
 	r.Use(middleware.Cors(), middleware.Auth())
 	r.GET("/health", func(*gin.Context) {})
 	api := r.Group("/api")
-	routers.InitRouters(api, c)
+	routers.InitRouters(api, controller)
 
 	fs := http.FileServer(http.Dir("www"))
 	r.NoRoute(func(ctx *gin.Context) {
@@ -53,6 +50,6 @@ func main() {
 
 	err := r.Run(fmt.Sprintf("%s:%d", cnf.Http.IP, cnf.Http.Port))
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 }

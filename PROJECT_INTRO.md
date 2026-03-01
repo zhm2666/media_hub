@@ -240,11 +240,11 @@ log:
   level: "info"
   logPath: "runtime/logs/app.log"
 
-<<<<<<< HEAD
 cos:
-
-=======
->>>>>>> 1c6cfb6 (删除密钥)
+  secretId: AK
+  secretKey: HA
+  cdnDomain: "https://mediahubdev.0voice.com"
+  bucketUrl: "https://mediahubdev-1256487221.cos.ap-guangzhou.myqcloud.com"
 
 dependOn:
   shortUrl:

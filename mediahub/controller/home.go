@@ -100,7 +100,6 @@ func (*Controller) Home(c *gin.Context) {
 	for i := 0; i < imgNum; i++ {
 		imgList[i] = imgDataList[list[i]]
 	}
-
 	h.Banners = bannerList
 	h.Images1 = imgList[:5]
 	h.Images2 = imgList[5:]
