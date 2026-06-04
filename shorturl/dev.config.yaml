@@ -1,7 +1,8 @@
 server:
   ip: 127.0.0.1
   port: 50051
-  accessToken: "me256487diahubdev122sapguumyqcang1cozholoud"
+#  accessToken: "me256487diahubdev122sapguumyqcang1cozholoud"
+  accessToken: "4cdQRSk678lTe015hpqWXYZAab2VrwxyGHIJKjmn"
 redis:
   host: "127.0.0.1"
   port: 6379

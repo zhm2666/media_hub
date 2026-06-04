@@ -1,0 +1,22 @@
+# AI Chat 后端服务配置文件
+# 复制此文件为 config.yaml 并修改相应配置
+
+# 用户中心服务地址
+# 用于验证用户登录 Token
+userCenter:
+  url: "http://localhost:8082"
+
+# Python AI 服务地址
+pythonServer:
+  url: "http://127.0.0.1:8081/api/chat-process"
+
+# 服务监听地址
+server:
+  host: "0.0.0.0"
+  port: 7080
+
+# 是否启用登录验证
+# true: 启用，未登录用户无法使用聊天功能
+# false: 禁用，所有人都可以使用
+auth:
+  enabled: true

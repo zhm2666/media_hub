@@ -1,0 +1,7 @@
+server:
+  port: "8080"
+
+userCenter:
+  url: "http://localhost:8082"
+  sysName: "demo"
+  jwtHashKey: "1040f1b0fa1ef69d804de8d5bc996830e7f049e"

@@ -10,4 +10,5 @@ log:
 dependOn:
   shortUrl:
     address: "localhost:50051"
-    accessToken: "me256487diahubdev122sapguumyqcang1cozholoud"
+#    accessToken: "me256487diahubdev122sapguumyqcang1cozholoud"
+    accessToken: "4cdQRSk678lTe015hpqWXYZAab2VrwxyGHIJKjmn"
